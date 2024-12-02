@@ -46,16 +46,20 @@ export default function Home() {
 
   const handleConvertToMachineReadable = async () => {
     if (file) {
-      const filePath = file.name; 
+      const fileName = file.name; 
       const response = await fetch('/api/convertFile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filePath }), 
+        body: JSON.stringify({ fileName }), 
       });
-
+  
       const result = await response.json();
-      setConvertedText(result.convertedText); 
-      console.log(result.message); 
+      if (response.ok) {
+        setConvertedText(result.text); 
+        console.log(result.message);
+      } else {
+        console.error('Error:', result.message);
+      }
     }
   };
 
