@@ -1,115 +1,116 @@
-import Image from "next/image";
-import localFont from "next/font/local";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { useState } from 'react';
 
 export default function Home() {
-  return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [file, setFile] = useState(null);
+  const [isMachineReadable, setIsMachineReadable] = useState(null); 
+  const [convertedText, setConvertedText] = useState('');
+  const [uploadedUrl, setUploadedUrl] = useState(''); 
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]); 
+  };
+
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file); 
+
+    
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData, 
+    });
+
+    const result = await response.json();
+    console.log(result.message); 
+
+    if (result.uploadedUrl) {
+      setUploadedUrl(result.uploadedUrl); 
+    }
+  };
+
+  const handleCheckMachineReadable = async () => {
+    if (file) {
+      const filePath = file.name; 
+      const response = await fetch('/api/checkFile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file: filePath }), 
+      });
+
+      const result = await response.json();
+      console.log(result)
+      setIsMachineReadable(result.isMachineReadable); 
+      console.log(result.message); 
+    }
+  };
+
+  const handleConvertToMachineReadable = async () => {
+    if (file) {
+      const filePath = file.name; 
+      const response = await fetch('/api/convertFile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filePath }), 
+      });
+
+      const result = await response.json();
+      setConvertedText(result.convertedText); 
+      console.log(result.message); 
+    }
+  };
+
+  const handleExtractData = async () => {
+    if (file) {
+      const filePath = file.name; 
+      const fileType = file.type; 
+      const response = await fetch('/api/extractData', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filePath, fileType }), 
+      });
+
+      const result = await response.json();
+      console.log(result.message, result.data); 
+    }
+  };
+
+  return (
+    <div className='h-screen w-full flex flex-col'>
+      <div className='flex justify-center items-center w-full '>
+      <h1 className='text-4xl my-5'>Upload and Convert Document to Machine-Readable Format</h1>
+      </div>
+      <div className='w-full p-6 my-2'>
+      <div className='flex justify-evenly items-center w-full text-xl'>
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleCheckMachineReadable} className='bg-white text-black p-2 cursor-pointer'>Check if Machine-Readable</button>
+      </div>
+
+      <div className='flex items-center my-6 justify-center'>
+
+      {isMachineReadable === false && (
+        <div className='text-2xl my-2 flex flex-col gap-3'>
+          <p>This is a non-machine-readable file.</p>
+          <button onClick={handleConvertToMachineReadable} className='bg-white text-black p-2 cursor-pointer'>Convert to Machine-Readable</button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+      </div>
+
+      {isMachineReadable && <p>This file is machine-readable!</p>}
+
+      <div className='flex items-center justify-center text-2xl'>
+
+      <button onClick={() => handleUpload(file)} className='bg-white text-black p-2 cursor-pointer mt-10'>Upload File</button>
+      </div>
+
+      {uploadedUrl && (
+        <div>
+          <p>Uploaded to Cloudinary: {uploadedUrl}</p>
+          <button onClick={handleExtractData} className='bg-white text-black p-2 cursor-pointer'>Extract Data</button>
+        </div>
+      )}
+
+      {convertedText && <div><p>Converted Text: {convertedText}</p></div>}
+      </div>
     </div>
   );
 }
