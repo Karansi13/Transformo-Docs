@@ -21,26 +21,33 @@ export default function Home() {
     });
 
     const result = await response.json();
+    console.log(result)
     console.log(result.message); 
 
-    if (result.uploadedUrl) {
-      setUploadedUrl(result.uploadedUrl); 
+    if (result.url) {
+      setUploadedUrl(result.url); 
     }
   };
 
+
   const handleCheckMachineReadable = async () => {
     if (file) {
-      const filePath = file.name; 
+      const formData = new FormData();
+      formData.append('file', file);
+  
       const response = await fetch('/api/checkFile', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ file: filePath }), 
+        body: formData,
       });
-
+  
       const result = await response.json();
       console.log(result)
-      setIsMachineReadable(result.isMachineReadable); 
-      console.log(result.message); 
+      setIsMachineReadable(result.isMachineReadable)
+      if (result.isMachineReadable) {
+        console.log("The file is machine-readable!");
+      } else {
+        console.log("The file is not machine-readable.");
+      }
     }
   };
 
@@ -65,15 +72,16 @@ export default function Home() {
 
   const handleExtractData = async () => {
     if (file) {
-      const filePath = file.name; 
       const fileType = file.type; 
       const response = await fetch('/api/extractData', {
-        method: 'POST',
+        method: 'POST', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filePath, fileType }), 
+        body: JSON.stringify({ filePath: uploadedUrl, fileType }), 
       });
+      
 
       const result = await response.json();
+      console.log(result)
       console.log(result.message, result.data); 
     }
   };
@@ -113,7 +121,7 @@ export default function Home() {
         </div>
       )}
 
-      {convertedText && <div><p>Converted Text: {convertedText}</p></div>}
+      {/* {convertedText && <div><p>Converted Text: {convertedText}</p></div>} */}
       </div>
     </div>
   );

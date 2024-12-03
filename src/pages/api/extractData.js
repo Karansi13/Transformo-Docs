@@ -3,18 +3,16 @@ import fs from 'fs';
 const extractDataFromTextFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf-8', (err, data) => {
-      if (err) {
-        return reject('Error reading file');
-      }
+      if (err) return reject('Error reading file');
       resolve(data);
     });
   });
 };
 
 const extractDataFromCSV = (filePath) => {
+  const csv = require('csv-parser');
+  const results = [];
   return new Promise((resolve, reject) => {
-    const csv = require('csv-parser');
-    const results = [];
     fs.createReadStream(filePath)
       .pipe(csv())
       .on('data', (data) => results.push(data))
@@ -27,13 +25,14 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { filePath, fileType } = req.body;
 
+    console.log('File Path:', filePath, 'File Type:', fileType);
+
     if (!filePath || !fileType) {
       return res.status(400).json({ message: 'Missing file path or file type' });
     }
 
     try {
       let extractedData;
-
       if (fileType === 'txt') {
         extractedData = await extractDataFromTextFile(filePath);
       } else if (fileType === 'csv') {

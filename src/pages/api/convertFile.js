@@ -1,51 +1,43 @@
 import Tesseract from 'tesseract.js';
 import path from 'path';
 import os from 'os';
+import fs from 'fs';
 
 const convertToText = async (filePath) => {
   return new Promise((resolve, reject) => {
-    Tesseract.recognize(
-      filePath,
-      'eng',
-      {
-        logger: (m) => console.log(m),
-      }
-    ).then(({ data: { text } }) => {
-      resolve(text);
-    }).catch((error) => {
-      reject(error);
-    });
+    Tesseract.recognize(filePath, 'eng', { logger: (m) => console.log(m) })
+      .then(({ data: { text } }) => resolve(text))
+      .catch((error) => reject(error));
   });
 };
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    console.log('Received request body:', req.body); 
-
-    const { fileName } = req.body; 
+    const { fileName } = req.body;
 
     if (!fileName) {
-      return res.status(400).json({ 
-        message: 'No file name provided',
-        receivedBody: req.body 
-      });
+      return res.status(400).json({ message: 'No file name provided' });
     }
 
-    // Construct path to Downloads folder
     const downloadsPath = path.join(os.homedir(), 'Downloads');
     const absoluteFilePath = path.join(downloadsPath, fileName);
 
-    console.log('Attempting to open file at path:', absoluteFilePath);
-
     try {
       const text = await convertToText(absoluteFilePath);
-      return res.status(200).json({ message: 'Conversion successful', text });
+
+      // Save as CSV
+      const csvFilePath = absoluteFilePath.replace(path.extname(fileName), '.csv');
+      fs.writeFileSync(csvFilePath, `Content\n"${text}"`);
+
+      return res.status(200).json({
+        message: 'File converted successfully to CSV',
+        convertedFilePath: csvFilePath,
+      });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ 
-        message: 'Error converting file to machine-readable format', 
+      return res.status(500).json({
+        message: 'Error converting file to machine-readable format',
         error: error.message,
-        attemptedPath: absoluteFilePath
       });
     }
   } else {
