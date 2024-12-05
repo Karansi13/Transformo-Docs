@@ -1,35 +1,7 @@
-// import { useState } from "react";
-
-// export default function Login() {
-//   const [formData, setFormData] = useState({ email: "", password: "" });
-
-//   const handleChange = (e) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     const response = await fetch("/api/auth/login", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(formData),
-//     });
-//     const result = await response.json();
-//     console.log(result.message);
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <input type="email" name="email" onChange={handleChange} placeholder="Email" required />
-//       <input type="password" name="password" onChange={handleChange} placeholder="Password" required />
-//       <button type="submit">Login</button>
-//     </form>
-//   );
-// }
-
-
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Footer from "@/components/Footer";
+import { toast } from 'react-hot-toast';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -52,13 +24,20 @@ export default function Login() {
       });
 
       const result = await response.json();
-      router.push("/"); 
-      
+      console.log(result)
       if (response.ok) {
-          console.log("Login successful:", result.message);
-          router.push("/"); 
+        console.log("Login successful:", result.message);
+        toast.success('Login successful!');
+
+        if (result.user.role === "Admin") {
+          router.push("/admin");
+        } else if (result.user.role === "User") {
+          router.push("/user");
+        } else {
+          setError("Invalid role. Please contact support.");
+        }
       } else {
-        setError(result.message);
+        setError(result.message); // Display server error message
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -71,6 +50,7 @@ export default function Login() {
   };
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-2xl font-bold mb-6">Login</h1>
       <form onSubmit={handleSubmit} className="w-80 text-black">
@@ -120,5 +100,6 @@ export default function Login() {
         </button>
       </form>
     </div>
+    </>
   );
 }

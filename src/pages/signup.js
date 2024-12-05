@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from 'react-hot-toast';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,10 @@ export default function Signup() {
       body: JSON.stringify(formData),
     });
     const result = await response.json();
+    if(response.ok){
+      toast.success('Account created, Please login!');
+    }
+    router.push("/login")
     console.log(result.message);
   };
 
