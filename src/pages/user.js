@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from 'react-hot-toast';
 
 export default function UserPage() {
   const [file, setFile] = useState(null);

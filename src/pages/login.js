@@ -37,11 +37,13 @@ export default function Login() {
           setError("Invalid role. Please contact support.");
         }
       } else {
-        setError(result.message); // Display server error message
+        setError(result.message); 
+        toast.error(result.message);
       }
     } catch (error) {
       console.error("Error during login:", error);
       setError("Something went wrong. Please try again.");
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
