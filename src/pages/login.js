@@ -30,9 +30,9 @@ export default function Login() {
         toast.success('Login successful!');
 
         if (result.user.role === "Admin") {
-          router.push("/admin");
+          router.push("/admin/dashboard");
         } else if (result.user.role === "User") {
-          router.push("/user");
+          router.push("/user/dashboard");
         } else {
           setError("Invalid role. Please contact support.");
         }

@@ -16,7 +16,7 @@ export default function Home() {
     };
 
     fetchUser();
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -46,7 +46,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold mb-4">Welcome!</h1>
           <button
             onClick={() =>
-              router.push(userRole === "Admin" ? "/admin" : "/user")
+              router.push(userRole === "Admin" ? "/admin/dashboard" : "/user/dashboard")
             }
             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mb-4"
           >

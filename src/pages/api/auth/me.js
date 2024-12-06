@@ -42,9 +42,12 @@ export default function handler(req, res) {
   }
 
   const user = verifyToken(token);
+  
   if (!user) {
     return res.status(403).json({ message: "Invalid token" });
   }
+  
+  return res.status(200).json({ user, message: "user verified"});
 
-  res.status(200).json(user);
+  // res.status(200).json(user);
 }
