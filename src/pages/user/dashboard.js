@@ -373,7 +373,7 @@ export default function UserPage() {
                         Drag & drop your files here, or click to select files
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        You can upload multiple files at once
+                        You can upload any type of files 
                       </Typography>
                     </Box>
                   </>

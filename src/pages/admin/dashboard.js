@@ -1,7 +1,7 @@
 // This page is currenlt being used
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { FaEye, FaTimes } from "react-icons/fa";
+import { FaEye, FaTimes, FaRegEdit  } from "react-icons/fa";
 import toast from "react-hot-toast";
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import {
@@ -24,6 +24,11 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { MdDeleteOutline } from "react-icons/md";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
+
 
 const fullDrawerWidth = 240;
 const shrinkedDrawerWidth = 80;
@@ -54,8 +59,8 @@ export default function AdminPage() {
         router.push("/");
       } else {
         const data = await response.json();
-        if (data.role !== "Admin") {
-          router.push("/");
+        if (data.role == "Admin") {
+          router.push("/admin/dashboard");
         }
       }
     };
@@ -156,6 +161,7 @@ export default function AdminPage() {
   );
 
   return (
+    <>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
@@ -233,7 +239,7 @@ export default function AdminPage() {
           All FIles
         </Typography>
         <Box className="p-5 w-full flex">
-          <table className="w-full border-collapse bg-white shadow-md rounded-lg text-black">
+          {/* <table className="w-full border-collapse bg-white shadow-md rounded-lg text-black">
             <thead>
               <tr className="text-left bg-gray-200 text-black text-xl">
                 <th className="p-4 font-medium">Name</th>
@@ -252,9 +258,64 @@ export default function AdminPage() {
                 </td>
 
               </tr>
-              {/* Add more rows as needed */}
             </tbody>
-          </table>
+          </table> */}
+          <table className="w-full border-collapse bg-white shadow-lg rounded-lg text-black">
+  <thead className="bg-gray-50">
+    <tr className="text-left text-gray-600 text-sm font-medium">
+      <th className="p-4">Name</th>
+      <th className="p-4">Upload Date</th>
+      <th className="p-4">Document Type</th>
+      <th className="p-4">Total File Size</th>
+      <th className="p-4">Actions</th>
+      <th className="p-4">Edit</th>
+      <th className="p-4">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr className="border-t border-gray-200 hover:bg-gray-50 text-sm">
+      <td className="p-4 text-green-600 font-medium">xyz.pdf</td>
+      <td className="p-4">21-03-2022</td>
+      <td className="p-4">Health Report</td>
+      <td className="p-4">305.99/376.37Mb</td>
+      <td className="p-4">
+        <button className="px-4 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600">View</button>
+      </td>
+      <td className="p-4">
+        <button className="p-2 bg-purple-100 text-purple-500 rounded-full hover:bg-purple-200">
+          <FaRegEdit />
+        </button>
+      </td>
+      <td className="p-4">
+        <button className="p-2 bg-red-100 text-red-500 rounded-full hover:bg-red-200">
+          <MdDeleteOutline />
+        </button>
+      </td>
+    </tr>
+    <tr className="border-t border-gray-200 hover:bg-gray-50 text-sm">
+      <td className="p-4 text-green-600 font-medium">abc.pdf</td>
+      <td className="p-4">08-03-2022</td>
+      <td className="p-4">Invoice</td>
+      <td className="p-4">305.99/376.37Kb</td>
+      <td className="p-4">
+        <button className="px-4 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600">View</button>
+      </td>
+      <td className="p-4">
+        <button className="p-2 bg-purple-100 text-purple-500 rounded-full hover:bg-purple-200">
+          <FaRegEdit />
+        </button>
+      </td>
+      <td className="p-4">
+        <button className="p-2 bg-red-100 text-red-500 rounded-full hover:bg-red-200">
+          <MdDeleteOutline />
+        </button>
+      </td>
+    </tr>
+    {/* Add more rows as needed */}
+  </tbody>
+</table>
+
+
         </Box>
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 h-screen w-full p-6">
@@ -281,6 +342,14 @@ export default function AdminPage() {
           </div>
         )}
       </Box>
+
+     
     </Box>
+    <Stack spacing={2}>
+      <Pagination count={10} shape="rounded" />
+      <Pagination count={10} color="secondary" />
+    </Stack>
+    </>
+    
   );
 }

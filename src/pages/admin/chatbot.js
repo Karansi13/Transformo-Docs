@@ -54,9 +54,9 @@ export default function AdminPage() {
         router.push("/");
       } else {
         const data = await response.json();
-        if (data.role !== "Admin") {
-          router.push("/");
-        }
+        if (data.role == "Admin") {
+            router.push("/admin/dashboard");
+          }
       }
     };
 
