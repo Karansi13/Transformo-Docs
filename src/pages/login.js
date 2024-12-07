@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Footer from "@/components/Footer";
 import { toast } from 'react-hot-toast';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -24,7 +24,7 @@ export default function Login() {
       });
 
       const result = await response.json();
-      console.log(result)
+      console.log(result);
       if (response.ok) {
         console.log("Login successful:", result.message);
         toast.success('Login successful!');
@@ -37,7 +37,7 @@ export default function Login() {
           setError("Invalid role. Please contact support.");
         }
       } else {
-        setError(result.message); 
+        setError(result.message);
         toast.error(result.message);
       }
     } catch (error) {
@@ -53,55 +53,78 @@ export default function Login() {
 
   return (
     <>
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
-      <form onSubmit={handleSubmit} className="w-80 text-black">
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-white">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-black to-gray-900 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-sm md:max-w-md bg-gray-800 p-6 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold text-center text-white mb-6">Login</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 py-2 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2 text-gray-500 hover:text-gray-300"
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
+            </div>
+
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
+            >
+              Login
+            </button>
+          </form>
+
+          <p className="mt-4 text-gray-300 text-center">
+            Don’t have an account?{" "}
+            <span
+              onClick={handleLoginRedirect}
+              className="text-blue-400 cursor-pointer hover:underline"
+            >
+              Signup
+            </span>
+          </p>
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-white">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <p className="mt-4 text-white">
-        Don't have an account?{" "}
-        <span
-          onClick={handleLoginRedirect}
-          className="text-blue-300 cursor-pointer hover:underline"
-        >
-          Signup
-        </span>
-      </p>
-        <button
-          type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Login
-        </button>
-      </form>
-    </div>
+      </div>
     </>
   );
 }

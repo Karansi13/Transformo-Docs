@@ -29,66 +29,81 @@ export default function Signup() {
     }
     router.push("/login")
     console.log(result.message);
-  };
+  }
+  
+  
 
   const handleLoginRedirect = () => {
     router.push("/login"); 
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-6">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="w-80 text-black">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-white">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            onChange={handleChange}
-            placeholder="Name"
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-white">
-            Email
-          </label>
-        <input
-          type="email"
-          name="email"
-          onChange={handleChange}
-          placeholder="Email"
-          required
-            className="w-full p-2 border rounded"
-        />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-white">
-            Password
-          </label>
-        <input
-          type="password"
-          name="password"
-          onChange={handleChange}
-          placeholder="Password"
-          required
-          className="w-full p-2 border rounded"
-        />
-        </div>
-        <p className="mt-4 text-white">
-        Already have an account?{" "}
-        <span
-          onClick={handleLoginRedirect}
-          className="text-blue-300 cursor-pointer hover:underline"
-        >
-          Login
-        </span>
-      </p>
-        <button type="submit"  className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sign Up</button>
-      </form>
+    <div className="flex items-center justify-center min-h-screen bg-black px-4 sm:px-6 lg:px-8">
+       <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-900"></div>
+      
+      <div className="relative w-full max-w-sm md:max-w-md bg-black/70 p-6 rounded-lg shadow-2xl backdrop-blur-md">
+        <h1 className="text-3xl font-bold text-center text-white mb-6">Sign Up</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              onChange={handleChange}
+              placeholder="Enter your name"
+              required
+              className="w-full px-3 py-2 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              onChange={handleChange}
+              placeholder="Enter your email"
+              required
+              className="w-full px-3 py-2 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleChange}
+              placeholder="Enter your password"
+              required
+              className="w-full px-3 py-2 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+          <button
+            type="submit"
+            className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <p className="mt-4 text-gray-300 text-center">
+          Already have an account?{" "}
+          <span
+            onClick={handleLoginRedirect}
+            className="text-blue-400 cursor-pointer hover:underline"
+          >
+            Login
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
