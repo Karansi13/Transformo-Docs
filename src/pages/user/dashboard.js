@@ -29,6 +29,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
 import Dropzone from "react-dropzone";
 import Image from "next/image";
+import Chatbot from "@/components/Chatbot";
 
 const fullDrawerWidth = 240;
 const shrinkedDrawerWidth = 80;
@@ -414,6 +415,7 @@ export default function UserPage() {
           </Button>
         </Box>
       </Box>
+      <Chatbot/>
     </Box>
   );
 }

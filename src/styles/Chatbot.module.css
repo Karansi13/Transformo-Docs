@@ -1,0 +1,111 @@
+/* Chatbot Icon */
+.chatboticon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1));
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .iconsvg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+  }
+  
+  /* Chatbot Window */
+  .chatbotwindow {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .chatbotmessages {
+    /* padding: 0px 0px 0px 5px; */
+    /* padding: 12px; */
+    height: 370px;  
+    width: 100%;
+  }
+  
+  
+  
+  .chatbotheader {
+    background-color: rgb(126 34 206 / var(--tw-bg-opacity, 1));
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .message {
+  font-size: 14px;
+  margin: 15px 10px;
+  padding: 8px;
+  border-radius: 20px;
+  max-width: 70%;
+  border: 1px solid #5b88e1;
+  word-wrap: break-word;
+  }
+  
+  .userMessage {
+  /* background-color: #25d366;  */
+  background-color: #fff; 
+  color: rgb(0, 0, 0);
+  margin-left: auto;
+  text-align: left;
+  border-radius: 15px 0px 15px 15px;
+  
+  }
+  
+  .botMessage {
+  /* background-color: #404040; */
+  background-color: #fff; 
+  color: rgb(0, 0, 0);
+  margin-right: auto;
+  text-align: left;
+  border-radius: 0px 15px 15px 15px;
+  }
+  
+  .message .timestamp {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .message.botMessage .timestamp {
+  right: auto;
+  left: 10px;
+  }
+  
+  
+  /* Input Section */
+  .chatbotinputcontainer {
+    border-top: 1px solid #e0e0e0;
+    padding: 12px;
+    width: 100%;
+  }
+  
+  .chatbotinput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .loader {
+    text-align: center;
+    color: #007bff;
+    padding: 10px;
+    font-style: italic;
+  }

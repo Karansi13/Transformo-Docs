@@ -1,3 +1,4 @@
+import Chatbot from "@/components/Chatbot";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
@@ -60,6 +61,8 @@ export default function Home() {
           </button>
         </>
       )}
+      <Chatbot/>
     </div>
+    
   );
 }
