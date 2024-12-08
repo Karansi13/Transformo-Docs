@@ -1,4 +1,7 @@
+"use client";
 import React from "react";
+import Image from 'next/image';
+import { ReactComponent as Container } from "public/assets/Container.svg";
 
 export default function LandingPage() {
   return (
@@ -52,22 +55,16 @@ export default function LandingPage() {
       </div>
 
 
-      <div className="relative bg-white">
-  {/* SVG Overlay Background */}
-  <div className="absolute inset-0 -z-10">
-    <svg
-      className="w-full h-full"
-      xmlns="/cont.svg"
-      viewBox="0 0 1200 800"
-      preserveAspectRatio="none"
-    >
-      <g fill="none" stroke="#FFC0CB" strokeWidth="2" strokeOpacity="0.3">
-        <path d="M0,100 Q600,200 1200,100 T2400,100" />
-        <path d="M0,300 Q600,400 1200,300 T2400,300" />
-        <path d="M0,500 Q600,600 1200,500 T2400,500" />
-      </g>
-    </svg>
-  </div>
+      <div className="relative bg-white h-screen flex items-center justify-center">
+        {/* SVG Overlay */}
+        <div className="absolute inset-0 -z-10 opacity-30">
+          <Image
+            src="/assets/Container.svg"
+            alt="Background Icon"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
 
 
     

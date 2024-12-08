@@ -1,5 +1,7 @@
 // import authMiddleware from "@/middleware/auth";
 
+import { verifyToken } from "src/utils/jwtUtils";
+
 // async function handler(req, res) {
 //   if (req.method === "GET") {
 //     return res.status(200).json({ user: req.user });
@@ -32,7 +34,6 @@
 // }
 
 
-import { verifyToken } from "@/utils/jwtUtils";
 
 export default function handler(req, res) {
   const token = req.cookies.token;

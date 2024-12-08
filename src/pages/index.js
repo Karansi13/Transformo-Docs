@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "../components/LandingPage";
 
 
 export default function Home() {
